@@ -1,0 +1,59 @@
+Input dimension - d
+Output dimension - D
+
+
+Protocol:
+
+Update:
+
+((z1 z2 ... zd) (x1 x2 ... xD))
+
+
+
+Query:
+
+Forward Prediction:
+    (predict (z1 z2 ... zd))                    [By default it assumes a SingleValued Prediction]
+
+    (predict SingleValued (z1 z2 ... zd))       [Same as previous command]
+    (predict MultiValued (z1 z2 ... zd))
+    (predict Strongest (z1 z2 ... zd))
+
+You can put an additional argument to ask for the Jacobian:
+    (predict (z1 z2 ... zd) WithJacobian)     
+    (predict MultiValued (z1 z2 ... zd) WithJacobian)
+
+Inverse Prediction
+    (predict Inverse (x1 x2 ... xD))
+
+Help, not much done here, sorry!
+    (help)
+
+
+
+Reply:
+Each reply is of the form
+    (sol1 sol2 sol3 ... solN)
+A forward solution has the following structure (SingleValued and Strongest predictions provide only one solution, of course):
+    ((Prediction x1 x2 ... xD) (Variance Vx1 Vx2 ... VxD) (Weight w) (Jacobian J11 J12 ... JDd))
+An inverse prediction has the following structure:
+    ((Prediction z1 z2 ... zd) (Variance Vz11 Vz12 ... Vzdd) (Weight w))
+
+Notes:
+    The Jacobian is only available if it was asked in the query, as expected.
+    Forward prediction has an uncertainty given by a diagonal covariance matrix, and so the module only returns its diagonal.
+    Inverse prediction, on the other hand, returns a full covariance matrix.
+ 
+
+
+Query examples for a R^3 -> R^2 map:
+
+(predict (0.1 0.2 0.0))                             --->    ( ((Prediction 1.5 1.7) (Variance 2.4 2.3) (Weight 1.0)) )
+(predict SingleValued (0.1 0.2 0.0))                --->    ( ((Prediction 1.5 1.7) (Variance 2.4 2.3) (Weight 1.0)) )
+(predict SingleValued (0.1 0.2 0.0) WithJacobian)   --->    ( ((Prediction 1.5 1.7) (Variance 2.4 2.3) (Weight 1.0) (Jacobian 1.0 2.0 3.0 4.0 5.0 6.0)))
+(predict Strongest (0.1 0.2 0.0))                   --->    ( ((Prediction 1.0 1.2) (Variance 0.4 0.3) (Weight 0.4)) )
+(predict MultiValued (0.1 0.2 0.0))                 --->    ( ((Prediction 1.0 1.2) (Variance 0.4 0.3) (Weight 0.4)) ((Prediction 2.0 2.3) (Variance 0.24 0.32) (Weight 0.6)) )
+(predict Inverse (2.0 2.0))                         --->    ( ((Prediction -0.4 0.5 1.4) (Variance 0.4 -0.3 0.4 -0.3 0.7 0.5 0.4 0.5 0.6) (Weight 1.0)) )
+
+
+
