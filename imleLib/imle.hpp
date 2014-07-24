@@ -1,17 +1,11 @@
-#ifndef __IMLE_H
-#define __IMLE_H
-
-#include <boost/serialization/version.hpp>
+#ifndef bdamas_IMLE_H
+#define bdamas_IMLE_H
 
 #include <string>
 #include <iostream>
 #include <limits>
 
-#define INIT_SIZE  2048
-#define MAX_NUMBER_OF_SOLUTIONS 16
-#define DEFAULT_SAVE "default.imle"
-
-#ifdef __IMLE_TESTER
+#ifdef bdamas_IMLE_TESTER
     #undef IMLE_NO_TEMPLATES
 #endif
 
@@ -29,6 +23,11 @@
 
 #include "EigenSerialized.hpp"
 #include "expert.hpp"
+
+#define INIT_SIZE  2048
+#define MAX_NUMBER_OF_SOLUTIONS 16
+#define DEFAULT_SAVE "default.imle"
+
 
 
 IMLE_CLASS_TEMPLATE_HEADER
@@ -202,7 +201,7 @@ public:
 	bool load(std::string const &filename);
 
     // Get internal model
-    int getNumberOfModels() {
+    int getNumberOfExperts() {
         return M; }
 	Experts const &getExperts() {
         return experts; }
@@ -240,7 +239,6 @@ protected:
 	void clusterForwardSolutions(int newSol1, int newSol2, int worseSol);
 	void getForwardSolutions();
 
-    void predictInverse2(X const &x);
 	void predictInverseSingle(X const &x);
 	bool validInverseSolutions(int &newSol1, int &newSol2, int &worseSol);
 	void clusterInverseSolutions(int newSol1, int newSol2, int worseSol);
@@ -356,17 +354,6 @@ void IMLE_base::Param::serialize(Archive & ar, const unsigned int version)
     ar & BOOST_SERIALIZATION_NVP(defaultSave);
     ar & BOOST_SERIALIZATION_NVP(accelerated);
 }
-
-
-/*
- * typedefs
- */
-
-// Only allowed in C++0x
-//template< int d, int D>
-//using IMLE = IMLE< d, D, LinearExpert<d,D> >;
-//template< int d, int D>
-//using FastIMLE = IMLE< d, D, FastLinearExpert<d,D> >;
 
 
 // IMLE template implementation

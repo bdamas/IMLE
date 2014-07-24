@@ -41,7 +41,6 @@ void IMLE_base::createDefaultParamFile(std::string const &fname)
     oa & BOOST_SERIALIZATION_NVP(param);
     std::cout << "Created the following configuration file:\n\n";
     param.display();
-//    std::cout << param;
 
     ofs.close();
 }
@@ -249,8 +248,6 @@ void IMLE_base::set_internal_parameters()
     pNoiseModelX = sig_level_noiseX_rbf / sqrt(Psi.prod());
     pNoiseModelZ = sig_level_noiseZ_rbf / sqrt(Sigma.prod());
     pNoiseModelZX = sig_level_noiseZX_rbf/ sqrt(Psi.prod() * Sigma.prod());
-
-//    sig_level_multi_test = quantile(boost::math::chi_squared(D*(D+1)/2), param.multiValuedSignificance);
 }
 
 
@@ -1090,18 +1087,6 @@ std::string IMLE_base::getName()
     return "IMLE";
 }
 
-//template< int d, int D>
-//std::string IMLE<d,D, class LinearExpert<d,D> >::getName()
-//{
-//    return "IMLE";
-//}
-//
-//template< int d, int D>
-//std::string IMLE<d,D,FastLinearExpert<d,D> >::getName()
-//{
-//    return "FastIMLE";
-//}
-
 IMLE_CLASS_TEMPLATE
 std::string IMLE_base::getInternalState()
 {
@@ -1115,7 +1100,7 @@ std::string IMLE_base::getInternalState()
 IMLE_CLASS_TEMPLATE
 typename IOnlineMixtureOfLinearModels<d,D>::LinearModels IMLE_base::getLinearModels()
 {
-    int M = getNumberOfModels();
+    int M = getNumberOfExperts();
     typename IOnlineMixtureOfLinearModels<d,D>::LinearModels models( M );
     LinearModel<d,D> *modelP;
 
@@ -1136,11 +1121,12 @@ typename IOnlineMixtureOfLinearModels<d,D>::LinearModels IMLE_base::getLinearMod
 IMLE_CLASS_TEMPLATE
 void IMLE_base::modelDisplay(std::ostream &out) const
 {
+    out << "-----------------------    Experts   ----" << std::endl;
    for(int i = 0; i < M; i++)
     {
         out << "------ #" << i+1 << ":" << std::endl;
         experts[i].modelDisplay(out);
-        out << "------------------------------------------" << std::endl;
+        out << std::endl;
     }
 
     out << "-----------------------    Common    ----" << std::endl;
@@ -1186,6 +1172,7 @@ void IMLE_base::Param::display(std::ostream &out) const
 IMLE_CLASS_TEMPLATE
 std::ostream &operator<<(std::ostream &out, IMLE_base const &imle_obj)
 {
+    out << "-----------------------  Parameters  ----" << std::endl;
     imle_obj.displayParameters(out);
     imle_obj.modelDisplay(out);
 

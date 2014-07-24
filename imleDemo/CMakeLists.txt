@@ -17,10 +17,10 @@ set( FLAGS "${FLAGS} ${imle_FLAGS}" )
 # IMLE Demonstration Executable
 #
 
-set(SRC1 imleDemo.cpp)
+set(SRC1 imleDemo.cpp imleDemo_common.hpp)
 set(TARGET1 imleDemo)
 
-set(SRC2 imleDemoNoTemplates.cpp)
+set(SRC2 imleDemoNoTemplates.cpp imleDemo_common.hpp)
 set(TARGET2 imleDemoNoTemplates)
 
 include_directories(${INCLUDE} )

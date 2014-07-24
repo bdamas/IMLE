@@ -1,8 +1,6 @@
-#ifndef __EXPERT_H
-#define __EXPERT_H
+#ifndef bdamas_EXPERT_H
+#define bdamas_EXPERT_H
 
-#include "EigenSerialized.hpp"
-#include "imle.hpp"
 
 #ifdef __IMLE_TESTER
     #undef IMLE_NO_TEMPLATES
@@ -17,6 +15,9 @@
     #define LINEAR_EXPERT_base               LinearExpert<d,D>
     #define FAST_LINEAR_EXPERT_base          FastLinearExpert<d,D>
 #endif
+
+#include "EigenSerialized.hpp"
+#include "imle.hpp"
 
 IMLE_CLASS_TEMPLATE
 class IMLE;
@@ -121,7 +122,6 @@ protected:
     inline void serialize(Archive & ar, const unsigned int version);
 
     // Shared prior
-//    IMLE<d,D,::LinearExpert> *mixture;
 #ifdef IMLE_NO_TEMPLATES
 	IMLE *mixture;
 #else

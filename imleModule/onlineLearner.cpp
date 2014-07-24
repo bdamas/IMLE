@@ -235,7 +235,7 @@ bool OnlineLearnerModule::respond(const Bottle& command, Bottle& reply)
 
 bool OnlineLearnerModule::updateModule()
 {
-    cout << "IMLE: " << nPoints << " points acquired, M = " << learner->getNumberOfModels() << ", Psi = [" << learner->getPsi().transpose() << "], sigma = [" << learner->getSigma().transpose() << "]." << endl;
+    cout << "IMLE: " << nPoints << " points acquired, M = " << learner->getNumberOfExperts() << ", Psi = [" << learner->getPsi().transpose() << "], sigma = [" << learner->getSigma().transpose() << "]." << endl;
 
     return true;
 }

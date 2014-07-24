@@ -1,5 +1,5 @@
-#ifndef __EIGENSERIALIZED_H
-#define __EIGENSERIALIZED_H
+#ifndef bdamas_EIGENSERIALIZED_H
+#define bdamas_EIGENSERIALIZED_H
 
 
 // Boost
@@ -8,15 +8,18 @@
 #include <boost/archive/xml_iarchive.hpp>
 #include <boost/archive/xml_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
+#include <boost/serialization/version.hpp>
 
-// Note: BEFORE eigen includes!!
-//#define EIGEN_MATRIXBASE_PLUGIN "EigenMatrixBaseSerialize.hpp"
+// To allow serialization of matrices and vectors
+// Note: BEFORE any eigen includes!!
 #define EIGEN_PLAINOBJECTBASE_PLUGIN "EigenMatrixBaseSerialize.hpp"
 
 // Eigen
 #include <Eigen/Core>
 #include<Eigen/StdVector>
 
+
+// Some convenient typedefs
 
 typedef Eigen::VectorXd Vec;
 typedef Eigen::MatrixXd Mat;
