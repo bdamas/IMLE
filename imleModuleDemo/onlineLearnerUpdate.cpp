@@ -1,4 +1,3 @@
-
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>
@@ -16,10 +15,6 @@ using namespace yarp::os;
 #define NOISE_Z 0.02
 #define NOISE_X 0.1
 
-#ifndef M_PI
-    #define M_PI       3.14159265358979323846  // Visual Studio was reported not to define M_PI, even when including cmath and defining _USE_MATH_DEFINES...
-#endif
-
 int main(int argc, char *argv[])
 {
     /* initialize yarp network */
@@ -32,7 +27,6 @@ int main(int argc, char *argv[])
     int outputDim;
     ResourceFinder rf;
     rf.configure(argc, argv);
-
 
     // An odd behaviour happens with yarp: the following code
     //      Value v = rf.find("inputDim");
@@ -65,8 +59,6 @@ int main(int argc, char *argv[])
         else
             outputDim = v.asInt();
     }
-
-
 
     BufferedPort<Bottle> outPort;
     if (!outPort.open(OUT_PORT))

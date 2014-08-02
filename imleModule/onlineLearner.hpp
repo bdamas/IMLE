@@ -28,8 +28,6 @@ class OnlineLearnerThread : public yarp::os::Thread
 {
     /* class variables */
     yarp::os::Bottle *bottle, *b_input, *b_output;
-//    Eigen::Matrix<Scal, INPUT_DIM, 1>  input_data;
-//    Eigen::Matrix<Scal, OUTPUT_DIM, 1>  output_data;
     LearnerMachine::Z input_data;
     LearnerMachine::X output_data;
 
@@ -108,7 +106,6 @@ class OnlineLearnerModule : public yarp::os::RFModule
     long nPoints;
 
     LearnerMachine *learner;
-    LearnerMachine::Param params;
 
    /* pointer to a new thread to be created and started in configure() and stopped in close() */
 

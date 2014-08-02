@@ -23,12 +23,10 @@ void demo1()
 
     //      IMLE Parameters
     IMLE<d,D>::Param param;
-    param.Psi0 = IMLE<d,D>::X::Constant(0.01);
-    param.sigma0 = 2.0;
-    param.wSigma = 2.0;
-    param.wPsi = 20.0;
-    param.multiValuedSignificance = 0.95;
-    param.p0 = 0.3;
+    param.Psi0 = IMLE<d,D>::X::Constant(0.1);
+    param.sigma0 = 1.0;
+    param.p0 = 0.2;
+    param.multiValuedSignificance = 0.9;
 
     imleObj.setParameters(param);
 
@@ -46,12 +44,9 @@ void demo2()
 
     //      IMLE Parameters
     IMLE<d,D>::Param param;
-    param.Psi0 = IMLE<d,D>::X::Constant(0.01);
-    param.sigma0 = 2.0;
-    param.wSigma = 2.0;
-    param.wPsi = 20.0;
-    param.multiValuedSignificance = 0.95;
-    param.p0 = 0.3;
+    param.Psi0 = IMLE<d,D>::X::Constant(0.1);
+    param.sigma0 = 1.0;
+    param.p0 = 0.2;
 
     // Param constructor:
     cout << "\t --- Param constructor: ---" << endl;
@@ -71,12 +66,9 @@ void demo3()
 
     //      IMLE Parameters
     IMLE<d,D>::Param param;
-    param.Psi0 = IMLE<d,D>::X::Constant(0.01);
-    param.sigma0 = 2.0;
-    param.wSigma = 2.0;
-    param.wPsi = 20.0;
-    param.multiValuedSignificance = 0.95;
-    param.p0 = 0.3;
+    param.Psi0 = IMLE<d,D>::X::Constant(0.1);
+    param.sigma0 = 1.0;
+    param.p0 = 0.2;
 
     // IMLE object
     IMLE<d,D> imleObj(param);

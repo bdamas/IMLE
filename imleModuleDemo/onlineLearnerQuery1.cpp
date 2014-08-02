@@ -17,10 +17,6 @@ using namespace yarp::os;
 #define NOISE_Z 0.02
 #define NOISE_X 0.1
 
-#ifndef M_PI
-    #define M_PI       3.14159265358979323846  // Visual Studio was reported not to define M_PI, even when including cmath and defining _USE_MATH_DEFINES...
-#endif
-
 
 int main(int argc, char *argv[])
 {
@@ -35,28 +31,37 @@ int main(int argc, char *argv[])
     ResourceFinder rf;
     rf.configure(argc, argv);
 
-    Value v = rf.find("inputDim");
-    if( v.isNull() )
+    // An odd behaviour happens with yarp: the following code
+    //      Value v = rf.find("inputDim");
+    //      (...)
+    //      v = rf.find("outputDim");
+    //
+    // results in v.isNull() returning always false even if v.asString() returns an empty string...
     {
-        cout << "Warning: no input dimension provided. Using default inputDim = 1." << endl;
-        cout << "\tSuggestion: use --inputDim X, where X is he desired input dimension," << endl;
-        cout << "\twhen calling this module." << endl;
-        inputDim = 1;
+        Value v = rf.find("inputDim");
+        if( v.isNull() )
+        {
+            cout << "Warning: no input dimension provided. Using default inputDim = 1." << endl;
+            cout << "\tSuggestion: use --inputDim X, where X is he desired input dimension," << endl;
+            cout << "\twhen calling this module." << endl;
+            inputDim = 1;
+        }
+        else
+            inputDim = v.asInt();
     }
-    else
-        inputDim = v.asInt();
 
-    v = rf.find("outputDim");
-    if( v.isNull() )
     {
-        cout << "Warning: no output dimension provided. Using default outputDim = 1." << endl;
-        cout << "\tSuggestion: use --outputDim X, where X is he desired output dimension," << endl;
-        cout << "\twhen calling this module." << endl;
-        outputDim = 1;
+        Value v = rf.find("outputDim");
+        if( v.isNull() )
+        {
+            cout << "Warning: no output dimension provided. Using default outputDim = 1." << endl;
+            cout << "\tSuggestion: use --outputDim X, where X is he desired output dimension," << endl;
+            cout << "\twhen calling this module." << endl;
+            outputDim = 1;
+        }
+        else
+            outputDim = v.asInt();
     }
-    else
-        outputDim = v.asInt();
-
 
     RpcClient outPort;
     if (!outPort.open(OUT_PORT))

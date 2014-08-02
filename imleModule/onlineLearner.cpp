@@ -42,10 +42,12 @@ void OnlineLearnerModule::parseIMLEConfigFile( yarp::os::Property &learnerProper
 	}
 
 	learner = new LearnerMachine( inputDim, outputDim );
+    LearnerMachine::Param params( inputDim, outputDim );
 #else
 	inputDim = INPUT_DIM;
 	outputDim = OUTPUT_DIM;
 	learner = new LearnerMachine;
+    LearnerMachine::Param params;
 #endif
 
 
@@ -58,11 +60,11 @@ void OnlineLearnerModule::parseIMLEConfigFile( yarp::os::Property &learnerProper
     if( bottle.check("defaultSave", vp ) && vp->isString()  && vp->asInt() != -1 )
         params.defaultSave = vp->asString().c_str();
     if( bottle.check("saveOnExit", vp ) && vp->isInt() && vp->asInt() != -1 )
-        params.saveOnExit = vp->asInt();
+        params.saveOnExit = (vp->asInt() == 1);
 
     bottle = learnerProperties.findGroup("Learning");
     if( bottle.check("accelerated", vp ) && vp->isInt() && vp->asInt() != -1 )
-        params.accelerated = vp->asInt();
+        params.accelerated = (vp->asInt() == 1);
     if( bottle.check("alpha", vp ) && (vp->isDouble() || vp->isInt()) && vp->asInt() != -1 )
         params.alpha = vp->asDouble();
 
@@ -103,6 +105,11 @@ void OnlineLearnerModule::parseIMLEConfigFile( yarp::os::Property &learnerProper
         params.nSolMax = vp->asInt();
     if( bottle.check("iterMax", vp ) && vp->isInt() && vp->asInt() != -1 )
         params.iterMax = vp->asInt();
+
+    learner->setParameters(params);
+    cout << "\t --- Current IMLE parameters: ---" << endl;
+    params.display();
+    cout << endl;
 }
 
 
@@ -141,9 +148,9 @@ bool OnlineLearnerModule::configure(ResourceFinder &rf)
         cout << getName() << ": unable to read configuration file " << learnerConfigFilename << endl;
         cout << getName() << ":    using default parameters." << endl;
     }
-//    else
-        parseIMLEConfigFile( learnerProperties );
-    learner->setParameters(params);
+
+    parseIMLEConfigFile( learnerProperties );
+
 
     /* open ports  */
     if (!dataPort.open(dataPortName.c_str())) {
@@ -199,6 +206,8 @@ bool OnlineLearnerModule::close()
 
     delete onlineLearnerThread;
     delete onlineLearnerQueryThread;
+
+    delete learner;
 
     return true;
 }

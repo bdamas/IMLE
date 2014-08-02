@@ -2,20 +2,12 @@
 
 # ---------------- REQUIREMENTS -----------------------
 
-set( INCLUDE "")
-set( LIBS "")
-set( FLAGS "")
-
 # YARP
 find_package(YARP REQUIRED)
-set( INCLUDE ${INCLUDE} ${YARP_INCLUDE_DIRS})
-set( LIBS ${LIBS} ${YARP_LIBRARIES})
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${YARP_LINK_FLAGS}")              
 
 
 # -------------   DEMO BUILDING   --------------------
-
-add_definitions("-D INPUT_DIM=${INPUT_DIM} -D OUTPUT_DIM=${OUTPUT_DIM}")
 
 #
 # IMLE Yarp Demonstration Training Module
@@ -23,10 +15,9 @@ add_definitions("-D INPUT_DIM=${INPUT_DIM} -D OUTPUT_DIM=${OUTPUT_DIM}")
 set(SRC onlineLearnerUpdate.cpp)
 set(TARGET onlineLearnerUpdate)
 
-include_directories(${INCLUDE})
-
 add_executable(${TARGET} ${SRC})
-target_link_libraries(${TARGET} ${LIBS})
+target_link_libraries(${TARGET} imleLib ${YARP_LIBRARIES})
+target_include_directories(${TARGET} PRIVATE ${YARP_INCLUDE_DIRS})
 
 #
 # IMLE Yarp Demonstration Query Module 1
@@ -34,10 +25,9 @@ target_link_libraries(${TARGET} ${LIBS})
 set(SRC onlineLearnerQuery1.cpp)
 set(TARGET onlineLearnerQuery1)
 
-include_directories(${INCLUDE})
-
 add_executable(${TARGET} ${SRC})
-target_link_libraries(${TARGET} ${LIBS})
+target_link_libraries(${TARGET} imleLib ${YARP_LIBRARIES})
+target_include_directories(${TARGET} PRIVATE ${YARP_INCLUDE_DIRS})
 
 #
 # IMLE Yarp Demonstration Query Module 2
@@ -45,8 +35,18 @@ target_link_libraries(${TARGET} ${LIBS})
 set(SRC onlineLearnerQuery2.cpp)
 set(TARGET onlineLearnerQuery2)
 
-include_directories(${INCLUDE})
-
 add_executable(${TARGET} ${SRC})
-target_link_libraries(${TARGET} ${LIBS})
+target_link_libraries(${TARGET} imleLib ${YARP_LIBRARIES})
+target_include_directories(${TARGET} PRIVATE ${YARP_INCLUDE_DIRS})
+
+#
+# Conf files for demonstration
+#
+file(GLOB ConfigFiles ${CMAKE_CURRENT_SOURCE_DIR}/conf/*.ini)
+add_custom_target(copy)
+foreach(ConfigFile ${ConfigFiles})
+    add_custom_command(
+        TARGET onlineLearnerUpdate 
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ConfigFile} $<TARGET_FILE_DIR:onlineLearnerUpdate>)
+endforeach()
 

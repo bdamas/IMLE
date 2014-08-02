@@ -1,0 +1,11 @@
+After setting a yarp server, run the following applications on separate terminals:
+ - onlineLearner1to1 (or onlineLearner if you wish to use the non-template version of the module)
+ - onlineLearnerUpdate  (generates training data)
+ - onlineLearnerQuery1  (generates some queries)
+ - onlineLearnerQuery2  (also generates queries)
+ 
+Now you must connect the modules ports: on another terminal, type the following (assuming default names for the ports):
+
+yarp connect  /genData/out /onlineLearner/data:i
+yarp connect /queryData1/rpc /onlineLearner/query:rpc
+yarp connect /queryData2/rpc /onlineLearner/query:rpc
