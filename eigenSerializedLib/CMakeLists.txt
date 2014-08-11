@@ -10,7 +10,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mod
 # ---------------- REQUIREMENTS -----------------------
 
 # BOOST Serialization
-set(Boost_USE_STATIC_LIBS   ON)
+if (NOT BUILD_IMLE_PYTHON_BINDINGS )
+    set(Boost_USE_STATIC_LIBS   ON)
+endif (NOT BUILD_IMLE_PYTHON_BINDINGS )
 set(Boost_USE_MULTITHREADED ON)
 FIND_PACKAGE(Boost REQUIRED COMPONENTS serialization)
 
@@ -31,4 +33,3 @@ add_library(eigenSerialized ${SRC})
 
 target_include_directories(eigenSerialized PUBLIC ${Boost_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} )
 target_link_libraries(eigenSerialized PUBLIC ${Boost_LIBRARIES})
-
