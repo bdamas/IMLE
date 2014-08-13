@@ -86,6 +86,16 @@ class Imle(object):
         """ Output dimensionality. """
         return self._imle_obj.outputDim()
 
+    @property
+    def sigma(self):
+        """ Input variances. """
+        return self._imle_obj.getSigma().flatten()
+
+    @property
+    def psi(self):
+        """ Output variances. """
+        return self._imle_obj.getPsi().flatten()
+
     def _predict(self, din, inverse=False, **kwargs):
         multiple = False if 'multiple' not in kwargs else kwargs['multiple']
 
