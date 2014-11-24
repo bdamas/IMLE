@@ -9,13 +9,10 @@ Eigen::VectorXd ImleParam::getPsi0() {
 }
 
 void ImleParam::setPsi0(const Eigen::VectorXd &newPsi0) {
-    printf("newPsi0 = %g", newPsi0[0]);
     Psi0 = newPsi0;
-    printf("Psi0 = %g", newPsi0[0]);
 }
 
 ImlePython::ImlePython(int d, int D, const ImleParam &param) : IMLE(d, D, param) {
-    printf("bite3 : %g \n", param.sigma0);
 }
 
 void ImlePython::reset() {
