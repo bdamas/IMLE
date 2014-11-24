@@ -14,11 +14,12 @@ class ImleParam(_imle.ImleParam):
 
     @property
     def Psi0(self):
-        return _imle.ImleParam.Psi0
+        return _imle.ImleParam._get_psi0(self)
 
     @Psi0.setter
     def Psi0(self, value):
-        _imle.ImleParam.Psi0 = array(value)
+        _imle.ImleParam._set_psi0(self, array(value))
+
 
     def __repr__(self):
         return repr({f: getattr(self, f) for f in ImleParam.fields})

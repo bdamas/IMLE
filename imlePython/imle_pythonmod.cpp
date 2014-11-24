@@ -15,7 +15,9 @@ BOOST_PYTHON_MODULE(_imle)
         .def_readwrite("accelerated", &IMLE::Param::accelerated)
         .def_readwrite("alpha", &IMLE::Param::alpha)
 
-        .add_property("Psi0", &ImleParam::getPsi0, &ImleParam::setPsi0)
+        // .add_property("Psi0", &ImleParam::getPsi0, &ImleParam::setPsi0)
+        .def("_get_psi0", &ImleParam::getPsi0)
+        .def("_set_psi0", &ImleParam::setPsi0)
         .def_readwrite("sigma0", &IMLE::Param::sigma0)
         .def_readwrite("wsigma", &IMLE::Param::wsigma)
         .def_readwrite("wpsi", &IMLE::Param::wpsi)
@@ -36,7 +38,7 @@ BOOST_PYTHON_MODULE(_imle)
 
     class_<ImlePython>("Imle", init<int, int, ImleParam>())
         .def("reset", &ImlePython::reset)
-        
+
         .def("update", &IMLE::update)
 
         .def("predict", &ImlePython::predict)
@@ -72,7 +74,9 @@ BOOST_PYTHON_MODULE(_imle)
         .def("load", &IMLE::load)
 
         .def("getNumberOfExperts", &IMLE::getNumberOfExperts)
-        .def("getSigma", &ImlePython::getSigma)
+        .def("getInvSigma", &ImlePython::getInvSigma)
         .def("getPsi", &ImlePython::getPsi)
+        .def("getLambda", &ImlePython::getLambda)
+        .def("getJointMu", &ImlePython::getJointMu)
     ;
 }
