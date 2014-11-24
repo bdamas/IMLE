@@ -1,4 +1,5 @@
-from numpy import array, ndarray
+from numpy import array, ndarray, hstack, vstack, diag
+from numpy.linalg import inv
 
 import _imle
 
@@ -86,15 +87,52 @@ class Imle(object):
         """ Output dimensionality. """
         return self._imle_obj.outputDim()
 
-    @property
-    def sigma(self):
-        """ Input variances. """
-        return self._imle_obj.getSigma().flatten()
+    def inv_sigma(self, i):
+        """ Inverse covariance matrix of expert i. """
+        return self._imle_obj.getInvSigma(i)
 
-    @property
-    def psi(self):
-        """ Output variances. """
-        return self._imle_obj.getPsi().flatten()
+    # @property
+    # def psi(self):
+    #     """ Output variances. """
+    #     return self._imle_obj.getPsi() # .flatten()
+
+#####
+
+
+    def get_sigma(self, k):
+        """ The input covariance matrix of the kth component."""
+        if k >= self.number_of_experts:
+            raise ValueError('check the expert indice')
+        return inv(array(self._imle_obj.getInvSigma(k)))
+
+    def get_lambda(self, k):
+        """ The linear transformation of the kth component."""
+        if k >= self.number_of_experts:
+            raise ValueError('check the expert indice')
+        return array(self._imle_obj.getLambda(k))
+
+    def get_psi(self, k):
+        """ The output noise of the kth component."""
+        if k >= self.number_of_experts:
+            raise ValueError('check the expert indice')
+        return array(self._imle_obj.getPsi(k))
+
+    def get_joint_mu(self, k):
+        """ The mean of the kth component of the joint GMM."""
+        if k >= self.number_of_experts:
+            raise ValueError('check the expert indice')
+        return array(self._imle_obj.getJointMu(k))
+
+    def get_joint_sigma(self, k):
+        """ The covariance matrix of the kth component of the joint GMM."""
+        if k >= self.number_of_experts:
+            raise ValueError('check the expert indice')
+        Sigma=self.get_sigma(k)
+        Lambda=self.get_lambda(k)
+        SigmaLambdaT=Sigma.dot(Lambda.T)
+        #LambdaSigma=Lambda.dot(Sigma)
+        return vstack((hstack((Sigma, SigmaLambdaT)), hstack((SigmaLambdaT.T, diag(self.get_psi(k)) + Lambda.dot(SigmaLambdaT)))))
+#####
 
     def _predict(self, din, inverse=False, **kwargs):
         multiple = False if 'multiple' not in kwargs else kwargs['multiple']

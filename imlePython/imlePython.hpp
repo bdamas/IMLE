@@ -22,6 +22,11 @@ public:
 
     void reset();
 
+    boost::python::list getJointMu(int expert);
+    boost::python::list getInvSigma(int expert);
+    boost::python::list getLambda(int expert);
+    boost::python::list getPsi(int expert);
+
     Eigen::VectorXd predict(const Eigen::VectorXd &z);
     Eigen::VectorXd predictStrongest(const Eigen::VectorXd &z);
 
@@ -42,8 +47,6 @@ public:
     boost::python::list getInversePredictionsVar();
     boost::python::list getInversePredictionsWeight();
 
-    Eigen::VectorXd getSigma();
-    Eigen::VectorXd getPsi();
 };
 
 #endif
